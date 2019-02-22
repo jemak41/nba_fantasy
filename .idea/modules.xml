@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../../MortgageTracker/Proj/.idea/Proj.iml" filepath="$PROJECT_DIR$/../../MortgageTracker/Proj/.idea/Proj.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../googlesheets/.idea/googlesheets.iml" filepath="$PROJECT_DIR$/../../googlesheets/.idea/googlesheets.iml" />
+    </modules>
+  </component>
+</project>
