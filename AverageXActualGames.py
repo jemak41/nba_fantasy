@@ -7,12 +7,14 @@ import time
 import re
 import pandas as pd
 from datetime import datetime as dt
+from datetime import timedelta
 import datetime, pytz
 
-dateToday = dt.now(pytz.timezone('US/Central'))
+dateAdvance = 0 #Add days when you want to start
+dateToday = dt.now(pytz.timezone('US/Central')) + timedelta(days=dateAdvance)
 daysAdd = 0 #Add days here if want to get the games after the specific date
 allstar = 0
-delay = 1
+delay = 1 #delay time
 
 def selPlayers():
     lisP = []
@@ -164,31 +166,6 @@ def main(lis):
 
     lis = lis
     gp_ = 0
-    """"
-    print('')
-    print('1. Total average for ALL the games this week')
-    print('2. Total average for the REST of the games this week')
-    print('')
-    gp_ = input('Please select a number >> ')
-    
-    
-
-    
-    print('')
-    print('1. My team')
-    print('2. Opponent\'s')
-    print('3. Enter a player ID')
-    print('')
-    a = input('What do you want to show? >> ')
-    if a == '1':
-        lis = li.lis1
-
-    elif a == '2':
-        lis = li.lis2
-    else:
-
-        lis = selPlayers()
-    """
 
     print('The week starts at: ' + str(wkStart))
     print('The week ends at: ' + str(wkEnd))

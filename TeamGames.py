@@ -4,6 +4,7 @@ import Teams as t
 import time
 
 dateToday = axag.dateToday
+advanceDay = 1
 
 def main():
     global wkStart,wkEnd
