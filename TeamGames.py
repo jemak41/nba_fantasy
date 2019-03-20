@@ -4,21 +4,22 @@ import Teams as t
 import time
 
 dateToday = axag.dateToday
-advanceDay = 1
 
 def main():
-    global wkStart,wkEnd
 
-    wkEnd = axag.dt.combine(axag.weekEnd(axag.datetime.date(dateToday.year, dateToday.month, dateToday.day), 6), axag.datetime.time())
-    wkStart = axag.dt.combine(axag.weekStart(axag.datetime.date(dateToday.year, dateToday.month, dateToday.day), 0), axag.datetime.time())
+    wkStart_ = axag.datetime.combine(axag.weekStart(axag.date(dateToday.year, dateToday.month, dateToday.day), 0), axag.time())
+    wkEnd_ = axag.datetime.combine(axag.weekEnd(axag.date(dateToday.year, dateToday.month, dateToday.day), 6), axag.time())
+
+
     lis = list(t.teamsList.values())
 
-    df_GPGL = axag.getGPGL(lis, wkStart)
-    df_GPNP = axag.getGPNG(lis, wkEnd, wkStart)
+    df_GPGL = axag.getGamesPlayed(lis, wkStart_)
+    df_GPNP = axag.getGamesNotPlayed(lis, wkEnd_, wkStart_)
 
-    print(str(wkStart))
-    print(str(wkEnd))
-    print('The date today is ' + str(dateToday))
+    print('The week starts at: ' + str(wkStart_))
+    print('The week ends at: ' + str(wkEnd_))
+    print('The modified date today is ' + str(dateToday))
+    print('The real date today is ' + str(axag.realdateToday))
     print()
 
     print()

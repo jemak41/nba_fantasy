@@ -45,12 +45,12 @@ lis1 = ['203507',  # Gianis
 #giannis, beal, conley, stein, rondo, cousins, iggy, whiteside, powell, jaren jackson (IL)
 
 #until ROUND 1 (possible huni)
-#giannis, beal, conley, stein, joseph, cousins, iggy, whiteside, powell, jaren jackson (IL)
-#options (sub for joseph) batum, marvin williams, bjelica
+#giannis, beal, conley, stein, bogdanovic, cousins, iggy, whiteside, powell, jaren jackson (IL)
+
 
 #until ROUND 2 (possible chichay)
-#giannis, beal, conley, stein, jaren jackson
-
+#candidate for drop: iggy, whiteside, powell, cousins
+#giannis, beal, conley, stein, bogdanovic, jaren jackson
 #possible in priority order mason plumlee, shai, kanter, kyle anderson, bjelica, patrick beverly, augustine(if need assist),
 
 """

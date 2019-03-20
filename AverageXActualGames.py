@@ -3,16 +3,15 @@ from nba_api.stats.endpoints import playernextngames as nxt
 from nba_api.stats.endpoints import playergamelog as pgl
 from nba_api.stats.library import data
 import list as li
-import time
+import time as Time
 import re
 import pandas as pd
-from datetime import datetime as dt
-from datetime import timedelta
-import datetime, pytz
+from datetime import timedelta, time, date, datetime
+import pytz
 
-dateAdvance = 0 #Add days when you want to start
-dateToday = dt.now(pytz.timezone('US/Central')) + timedelta(days=dateAdvance)
-daysAdd = 0 #Add days here if want to get the games after the specific date
+dateAdvance = 2 #Add days when you want to start
+realdateToday = datetime.now(pytz.timezone('US/Central'))
+dateToday = datetime.now(pytz.timezone('US/Central')) + timedelta(days=dateAdvance)
 allstar = 0
 delay = 1 #delay time
 
@@ -43,38 +42,41 @@ def weekStart(curdate, weekstart):
     days_ahead = weekstart - curdate.weekday()
     if days_ahead > 0:
         days_ahead += -7
-    return curdate + datetime.timedelta(days_ahead)
+    return curdate + timedelta(days_ahead)
 
+#curdate is dateToday in date format e.g.: (2019, 3, 24)
+#weekday monday = 1, thursday =4
+#weekend is 6
 def weekEnd(curdate, weekend):
     days_behind = weekend - curdate.weekday()
-    if days_behind <= 0: # Target day already happened this week
+    if days_behind < 0: # Target day already happened this week
         days_behind += 7 + allstar #allstar
-    return curdate + datetime.timedelta(days_behind + allstar)
+    return curdate + timedelta(days_behind + allstar)
 
 
-def getGPNG(lis,wkEnd, wkStart):
+def getGamesNotPlayed(lis, wkEnd, wkStart):
     gp = pd.DataFrame(columns=['PlayerID', 'GTBP'])
     df = pd.DataFrame()
     for x in range(len(lis)):
         df = nxt.PlayerNextNGames(lis[x]).get_data_frames()[0]
         df.GAME_DATE = pd.to_datetime(df.GAME_DATE)
-        df = df[df.GAME_DATE >= (wkStart + datetime.timedelta(daysAdd))]
+        df = df[df.GAME_DATE >= date(dateToday.year, dateToday.month, dateToday.day)]#(wkStart + timedelta(dateAdvance))]
         df = df[df.GAME_DATE <= wkEnd]
         gp = gp.append({'PlayerID': lis[x], 'GTBP': len(df)}, ignore_index=True)
-        time.sleep(delay)
+        Time.sleep(delay)
         if x % 8 == 0:
             print(str(x) + ' seconds has passed')
     print()
     return gp
 
-def getGPGL(lis, wkStart):
+def getGamesPlayed(lis, wkStart):
     gp = pd.DataFrame(columns=['PlayerID', 'GTBP'])
     for x in range(len(lis)):
         df = pgl.PlayerGameLog(lis[x]).get_data_frames()[0]
         df.GAME_DATE = pd.to_datetime(df.GAME_DATE)
-        df = df[df.GAME_DATE >= wkStart + datetime.timedelta(daysAdd)]
+        df = df[df.GAME_DATE >= wkStart + timedelta(dateAdvance)]
         gp = gp.append({'PlayerID': lis[x], 'GTBP': len(df)}, ignore_index=True)
-        time.sleep(delay)
+        Time.sleep(delay)
         if x % 8 == 0:
             print(str(x) + ' seconds has passed')
     print()
@@ -85,7 +87,7 @@ def getTotalAve(lis, GTBP):
     df = pd.DataFrame()
     for x in range(len(lis)):
         df = df.append(pfp.PlayerFantasyProfile(lis[x]).get_data_frames()[0], ignore_index=True)
-        time.sleep(delay)
+        Time.sleep(delay)
 
     df = df.drop(columns=['GROUP_SET',
                           'GROUP_VALUE',
@@ -161,30 +163,31 @@ def getTotal(df_TotAve):
 def main(lis):
 
 
-    wkStart = dt.combine(weekStart(datetime.date(dateToday.year, dateToday.month, dateToday.day), 0), datetime.time())  # This variable should have the monday of this week
-    wkEnd = dt.combine(weekEnd(datetime.date(dateToday.year, dateToday.month, dateToday.day), 6), datetime.time()) #0 is where it the weekstart which is sunday so add 1 for monday so on...
+    wkStart = datetime.combine(weekStart(date(dateToday.year, dateToday.month, dateToday.day), 0), time())  # This variable should have the monday of this week
+    wkEnd = datetime.combine(weekEnd(date(dateToday.year, dateToday.month, dateToday.day), 6), time()) #0 is where it the weekstart which is sunday so add 1 for monday so on...
 
     lis = lis
     gp_ = 0
 
     print('The week starts at: ' + str(wkStart))
     print('The week ends at: ' + str(wkEnd))
-    print('The date today is ' + str(dateToday))
+    print('The modified date today is ' + str(dateToday))
+    print('The real date today is ' + str(realdateToday))
     print()
 
-    df_GPGL = getGPGL(lis, wkStart)
-    df_GPNP = getGPNG(lis, wkEnd, wkStart)
+    df_GamesPlayed = getGamesPlayed(lis, wkStart)
+    df_GamesNotPlayed = getGamesNotPlayed(lis, wkEnd, wkStart)
 
-    print(df_GPGL)
-    print(df_GPNP)
+    print(df_GamesPlayed)
+    print(df_GamesNotPlayed)
 
-    df_GP = df_GPNP
+    df_GP = df_GamesNotPlayed
 
     if gp_ == '1':
-        df_GP.GTBP = df_GPNP.GTBP + df_GPGL.GTBP
+        df_GP.GTBP = df_GamesNotPlayed.GTBP + df_GamesPlayed.GTBP
     print()
 
-    print('There are ' + str(df_GPNP.GTBP.sum()) + ' more game(s) to be played \n')
+    print('There are ' + str(df_GamesNotPlayed.GTBP.sum()) + ' more game(s) to be played \n')
 
 
 

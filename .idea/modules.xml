@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../../MortgageTracker/Proj/.idea/Proj.iml" filepath="$PROJECT_DIR$/../../MortgageTracker/Proj/.idea/Proj.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../googlesheets/.idea/googlesheets.iml" filepath="$PROJECT_DIR$/../../googlesheets/.idea/googlesheets.iml" />
+      <module fileurl="file://$USER_HOME$/MortgageTracker/Proj/.idea/Proj.iml" filepath="$USER_HOME$/MortgageTracker/Proj/.idea/Proj.iml" />
+      <module fileurl="file://$USER_HOME$/googlesheets/.idea/googlesheets.iml" filepath="$USER_HOME$/googlesheets/.idea/googlesheets.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/nba_fantasy.iml" filepath="$PROJECT_DIR$/.idea/nba_fantasy.iml" />
     </modules>
   </component>
 </project>
